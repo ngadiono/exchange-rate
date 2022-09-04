@@ -1,11 +1,19 @@
 // Vendors
-import React from 'react';
+import React, { memo } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-const Header: React.FC = () => {
+// Styles
+import { Input } from './Header.style';
+
+interface Props {
+  amount: number;
+  onChangeAmount: (e: any) => void;
+}
+
+const Header: React.FC<Props> = ({ amount, onChangeAmount }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ boxShadow: 'none' }}>
@@ -18,11 +26,11 @@ const Header: React.FC = () => {
               USD
             </Typography>
           </Box>
-          <Typography variant="h6">10.00</Typography>
+          <Input value={amount} onChange={onChangeAmount} />
         </Toolbar>
       </AppBar>
     </Box>
   );
 };
 
-export default Header;
+export default memo(Header);

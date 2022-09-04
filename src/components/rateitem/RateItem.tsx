@@ -12,10 +12,11 @@ interface Props {
   rate: number;
   symbol: string;
   symbolName: string;
+  amount: number;
   deleteRate: () => void;
 }
 
-const RateItem: React.FC<Props> = ({ id, rate, symbol, symbolName, deleteRate }) => {
+const RateItem: React.FC<Props> = ({ id, rate, symbol, symbolName, amount, deleteRate }) => {
   return (
     <Item>
       <Box sx={{ flexGrow: 1, padding: '10px' }}>
@@ -24,7 +25,7 @@ const RateItem: React.FC<Props> = ({ id, rate, symbol, symbolName, deleteRate })
             {symbol}
           </Typography>
           <Typography variant="h6" gutterBottom>
-            {10 * rate}
+            {amount * rate}
           </Typography>
         </Box>
         <Typography variant="subtitle1" sx={{ fontStyle: 'italic', fontWeight: 'bold' }}>

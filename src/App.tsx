@@ -1,5 +1,5 @@
 // Vendors
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 
@@ -18,6 +18,7 @@ import axios from './axios';
 const App: React.FC = () => {
   const [state, dispatch] = useReducer(rateReducer, initialRateState);
   const { rates, symbols } = state;
+  const [amount, setAmount] = useState<number>(10);
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -34,7 +35,7 @@ const App: React.FC = () => {
   }, []);
   return (
     <Container maxWidth="sm">
-      <Header />
+      <Header amount={amount} onChangeAmount={(e) => setAmount(e.target.value)} />
       <Box sx={{ width: '100%', padding: '20px 0' }}>
         {rates?.map(({ id, symbol, rate }) => (
           <RateItem
@@ -42,6 +43,7 @@ const App: React.FC = () => {
             id={id}
             symbol={symbol}
             rate={rate}
+            amount={amount}
             symbolName={symbols[symbol]}
             deleteRate={() => dispatch(deleteRateAction(id))}
           />
