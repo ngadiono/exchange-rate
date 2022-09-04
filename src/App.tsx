@@ -1,22 +1,43 @@
 // Vendors
-import React from 'react';
+import React, { useEffect, useReducer } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 
 // Components
 import Header from './components/header/Header';
 import BtnAction from './components/btnaction/BtnAction';
-import CurrencyItem from './components/currencyitem/CurrencyItem';
+import RateItem from './components/rateitem/RateItem';
+
+// State
+import { initialRateState, rateReducer } from './reducers/rate.reducer';
+import { ratesAction, symbolsAction } from './reducers/rate.reducer';
+
+// Utils
+import axios from './axios';
 
 const App: React.FC = () => {
+  const [state, dispatch] = useReducer(rateReducer, initialRateState);
+  const { rates, symbols } = state;
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const resRates = await axios.get(`/exchangerates_data/latest?symbols=IDR,EUR,GBP,SGD&base=USD`);
+        dispatch(ratesAction(resRates.data.rates));
+        const resSymbols = await axios.get('/exchangerates_data/symbols');
+        dispatch(symbolsAction(resSymbols.data.symbols));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchRates();
+  }, []);
   return (
     <Container maxWidth="sm">
       <Header />
       <Box sx={{ width: '100%', padding: '20px 0' }}>
-        <Stack spacing={2}>
-          <CurrencyItem />
-        </Stack>
+        {rates?.map(({ id, symbol, rate }) => (
+          <RateItem key={id} symbol={symbol} rate={rate} symbolName={symbols[symbol]} />
+        ))}
       </Box>
       <BtnAction />
     </Container>

@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 const Header: React.FC = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ boxShadow: 'none' }}>
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1" sx={{ fontStyle: 'italic' }}>
@@ -18,7 +18,7 @@ const Header: React.FC = () => {
               USD
             </Typography>
           </Box>
-          <Typography variant="h6">1.00</Typography>
+          <Typography variant="h6">10.00</Typography>
         </Toolbar>
       </AppBar>
     </Box>

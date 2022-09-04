@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 
 const BtnAction: React.FC = () => {
   return (
-    <Button variant="contained" size="large" color="success" fullWidth>
+    <Button variant="contained" size="large" color="success" fullWidth disableElevation>
       (+) Add More Currencies
     </Button>
   );
