@@ -10,15 +10,38 @@ import RateItem from './components/rateitem/RateItem';
 
 // State
 import { initialRateState, rateReducer } from './reducers/rate.reducer';
-import { ratesAction, symbolsAction, deleteRateAction } from './reducers/rate.reducer';
+import { ratesAction, symbolsAction, rateDeleteAction, rateAddAction } from './reducers/rate.reducer';
 
 // Utils
 import axios from './axios';
 
 const App: React.FC = () => {
   const [state, dispatch] = useReducer(rateReducer, initialRateState);
-  const { rates, symbols } = state;
+  const { rates, symbols, selectRates } = state;
   const [amount, setAmount] = useState<number>(10);
+
+  const handleSymbols = () => {
+    const listSymbol = Object.keys(symbols).map((key) => ({
+      symbol: key,
+      name: symbols[key],
+    }));
+    const filteredSymbol = listSymbol.filter(({ symbol }) => selectRates.includes(symbol));
+    return filteredSymbol;
+  };
+
+  const handleSelectRates = () => {};
+
+  const handleAddRate = (symbol: string) => {
+    const fetchRateOne = async () => {
+      try {
+        const resRates = await axios.get(`/exchangerates_data/latest?symbols=${symbol}&base=USD`);
+        dispatch(rateAddAction(resRates.data.rates));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchRateOne();
+  };
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -37,19 +60,22 @@ const App: React.FC = () => {
     <Container maxWidth="sm">
       <Header amount={amount} onChangeAmount={(e) => setAmount(e.target.value)} />
       <Box sx={{ width: '100%', padding: '20px 0' }}>
-        {rates?.map(({ id, symbol, rate }) => (
+        {rates?.map(({ symbol, rate }) => (
           <RateItem
-            key={id}
-            id={id}
+            key={symbol}
             symbol={symbol}
             rate={rate}
             amount={amount}
             symbolName={symbols[symbol]}
-            deleteRate={() => dispatch(deleteRateAction(id))}
+            deleteRate={() => dispatch(rateDeleteAction(symbol))}
           />
         ))}
       </Box>
-      <BtnAction />
+      <BtnAction
+        symbols={handleSymbols()}
+        handleSelectRates={handleSelectRates}
+        handleAddRate={handleAddRate}
+      />
     </Container>
   );
 };
