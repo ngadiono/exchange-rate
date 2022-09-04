@@ -10,10 +10,11 @@ import { Input } from './Header.style';
 
 interface Props {
   amount: number;
+  ratesLength: number;
   onChangeAmount: (e: any) => void;
 }
 
-const Header: React.FC<Props> = ({ amount, onChangeAmount }) => {
+const Header: React.FC<Props> = ({ amount, ratesLength, onChangeAmount }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ boxShadow: 'none' }}>
@@ -26,7 +27,13 @@ const Header: React.FC<Props> = ({ amount, onChangeAmount }) => {
               USD
             </Typography>
           </Box>
-          <Input value={amount} onChange={onChangeAmount} />
+          {ratesLength > 0 ? (
+            <Input value={amount} onChange={onChangeAmount} />
+          ) : (
+            <Typography variant="h6" gutterBottom>
+              {amount}
+            </Typography>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

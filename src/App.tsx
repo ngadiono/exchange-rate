@@ -71,7 +71,7 @@ const App: React.FC = () => {
 
   return (
     <Container maxWidth="sm" sx={{ padding: '30px 0' }}>
-      <Header amount={amount} onChangeAmount={(e) => setAmount(e.target.value)} />
+      <Header amount={amount} ratesLength={rates?.length} onChangeAmount={(e) => setAmount(e.target.value)} />
       <Box sx={{ width: '100%', padding: '20px 0' }}>
         {rates?.length > 0 ? (
           <>
