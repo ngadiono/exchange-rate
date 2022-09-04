@@ -8,12 +8,14 @@ import Button from '@mui/material/Button';
 import { Item } from './RateItem.style';
 
 interface Props {
+  id: number;
   rate: number;
   symbol: string;
   symbolName: string;
+  deleteRate: () => void;
 }
 
-const RateItem: React.FC<Props> = ({ rate, symbol, symbolName }) => {
+const RateItem: React.FC<Props> = ({ id, rate, symbol, symbolName, deleteRate }) => {
   return (
     <Item>
       <Box sx={{ flexGrow: 1, padding: '10px' }}>
@@ -32,7 +34,7 @@ const RateItem: React.FC<Props> = ({ rate, symbol, symbolName }) => {
           1 USD = {symbol} {rate}
         </Typography>
       </Box>
-      <Button variant="contained" color="error">
+      <Button variant="contained" color="error" onClick={deleteRate}>
         (-)
       </Button>
     </Item>

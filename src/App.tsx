@@ -10,7 +10,7 @@ import RateItem from './components/rateitem/RateItem';
 
 // State
 import { initialRateState, rateReducer } from './reducers/rate.reducer';
-import { ratesAction, symbolsAction } from './reducers/rate.reducer';
+import { ratesAction, symbolsAction, deleteRateAction } from './reducers/rate.reducer';
 
 // Utils
 import axios from './axios';
@@ -18,6 +18,7 @@ import axios from './axios';
 const App: React.FC = () => {
   const [state, dispatch] = useReducer(rateReducer, initialRateState);
   const { rates, symbols } = state;
+
   useEffect(() => {
     const fetchRates = async () => {
       try {
@@ -36,7 +37,14 @@ const App: React.FC = () => {
       <Header />
       <Box sx={{ width: '100%', padding: '20px 0' }}>
         {rates?.map(({ id, symbol, rate }) => (
-          <RateItem key={id} symbol={symbol} rate={rate} symbolName={symbols[symbol]} />
+          <RateItem
+            key={id}
+            id={id}
+            symbol={symbol}
+            rate={rate}
+            symbolName={symbols[symbol]}
+            deleteRate={() => dispatch(deleteRateAction(id))}
+          />
         ))}
       </Box>
       <BtnAction />

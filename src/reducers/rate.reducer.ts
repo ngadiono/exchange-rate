@@ -6,6 +6,7 @@ type State = {
 enum ActionKind {
   Rates = 'RATES',
   Symbols = 'SYMBOLS',
+  RateDelete = 'RATE_DELETE',
 }
 
 type Action = {
@@ -28,6 +29,11 @@ export const symbolsAction: (obj: any) => Action = (payload: object) => ({
   payload,
 });
 
+export const deleteRateAction: (obj: any) => Action = (payload: number | string) => ({
+  type: ActionKind.RateDelete,
+  payload,
+});
+
 export const rateReducer = (state: State, action: Action) => {
   const { type, payload } = action;
   switch (type) {
@@ -42,6 +48,16 @@ export const rateReducer = (state: State, action: Action) => {
       return {
         ...state,
         symbols: payload,
+      };
+    }
+
+    case ActionKind.RateDelete: {
+      const idx = state.rates.findIndex((t) => t.id === payload);
+      const rates = [...state.rates];
+      rates.splice(idx, 1);
+      return {
+        ...state,
+        rates: rates,
       };
     }
 
