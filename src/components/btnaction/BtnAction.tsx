@@ -4,14 +4,16 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface Props {
   symbols: any[];
+  loadingSubmit: boolean;
   handleSelectRates: () => void;
   handleAddRate: (symbol: string) => void;
 }
 
-const BtnAction: React.FC<Props> = ({ symbols, handleSelectRates, handleAddRate }) => {
+const BtnAction: React.FC<Props> = ({ symbols, handleSelectRates, handleAddRate, loadingSubmit }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>('');
 
@@ -39,7 +41,7 @@ const BtnAction: React.FC<Props> = ({ symbols, handleSelectRates, handleAddRate 
         </Button>
       ) : (
         <Stack direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={1}>
-          <Select value={selected} onChange={handleChange} fullWidth>
+          <Select value={selected} onChange={handleChange} fullWidth disabled={loadingSubmit}>
             {symbols?.map(({ symbol, name }) => (
               <MenuItem key={symbol} value={symbol}>
                 {symbol} - {name}
@@ -51,10 +53,14 @@ const BtnAction: React.FC<Props> = ({ symbols, handleSelectRates, handleAddRate 
             size="large"
             color="success"
             disableElevation
-            onClick={() => handleAddRate(selected)}
+            disabled={loadingSubmit || selected === ''}
+            onClick={() => {
+              handleAddRate(selected);
+              setSelected('');
+            }}
             sx={{ height: '55px' }}
           >
-            Submit
+            {loadingSubmit ? <CircularProgress /> : 'Submit'}
           </Button>
         </Stack>
       )}
