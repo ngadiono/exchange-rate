@@ -33,8 +33,6 @@ const App: React.FC = () => {
     return filteredSymbol;
   };
 
-  const handleSelectRates = () => {};
-
   const handleAddRate = (symbol: string) => {
     setLoadingSubmit(true);
     const fetchRateOne = async () => {
@@ -92,8 +90,8 @@ const App: React.FC = () => {
       </Box>
       <BtnAction
         symbols={handleSymbols()}
-        handleSelectRates={handleSelectRates}
         handleAddRate={handleAddRate}
+        selectRatesLength={selectRates?.length}
         loadingSubmit={loadingSubmit}
       />
     </Container>
