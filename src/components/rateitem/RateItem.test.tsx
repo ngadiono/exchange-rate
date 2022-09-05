@@ -1,9 +1,18 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from '../../App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+import RateItem from './RateItem';
+
+const props = {
+  rate: 8.9,
+  symbol: 'SGD',
+  symbolName: 'Singapore Dollar',
+  amount: 10,
+  deleteRate: jest.fn(),
+};
+
+test('Component <RateItem />', () => {
+  const { container } = render(<RateItem {...props} />);
+
+  // Check <RateItem /> should be rendered
+  expect(container).toBeTruthy();
 });
